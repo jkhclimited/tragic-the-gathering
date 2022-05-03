@@ -90,21 +90,39 @@ function addToThisDeck(req, res) {
                     });
                 });
             });
-        } else {
-            Card.findOne(query, function(err, card){
-                card.copiesInDeck++;
-                card.save(function(err){
-                    if (card.copiesInDeck > card.quantity) {
-                        card.quantity = card.copiesInDeck;
-                        card.save();
-                    }
+        } else { // The card has been found
+            User.findById(req.user.id).populate('cards').exec(function(err, user){ // Find the user and populate
+                let needNew = true;
+                user.cards.forEach(function(c){
+                    if (c.name === cardCache.name && c.set === cardCache.set && c.collector_number === cardCache.collector_number){
+                        c.copiesInDeck++;
+                        if (c.copiesInDeck > c.quantity) {
+                            c.quantity = c.copiesInDeck;
+                        }
+                        c.save();
+                        needNew = false;
+                        Deck.findById(deckID, function(err, deck) {
+                            deck.cards.push(c);
+                            deck.save(function(err) {
+                                res.redirect('/decks/' + deckID);
+                            });
+                        });
+                    };
                 });
-                Deck.findById(deckID, function(err, deck) {
-                    deck.cards.push(card);
-                    deck.save(function(err) {
-                        res.redirect('/decks/' + deckID);
+                console.log(needNew);
+                if (needNew) {
+                    Card.create(cardCache, function(err, card){
+                        req.user.cards.push(card);
+                        req.user.save(function(err) {
+                            Deck.findById(deckID, function(err, deck) {
+                                deck.cards.push(card);
+                                deck.save(function(err) {
+                                    res.redirect('/decks/' + deckID);
+                                });
+                            });
+                        });
                     });
-                });
+                };
             });
         };
     }));

@@ -15,7 +15,7 @@ function showIndex(req, res) {
             res.render('cards/deck', {
                 title: "Decks",
                 user: req.user,
-                decks: decks,
+                decks: user.decks,
             });
         });
     });

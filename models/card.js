@@ -10,7 +10,7 @@ const cardSchema = new mongoose.Schema({
   set: String,        // set
   set_name: String,   // set_name
   oracle_text: String,// oracle_text
-  collector_number: Number, // collector_number
+  collector_number: String, // collector_number
   quantity: {
     type: Number,     // n/a
     default: 1,

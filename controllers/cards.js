@@ -52,18 +52,26 @@ function indexSearch(req, res, next,) {
 
 function boxShow(req, res, next,) {
     let card = {};
-    User.findById(req.user.id).populate({path: 'cards', options: {sort: {'name':'asc', 'set':'asc', 'collector_number':'asc'}}}).exec(function(err, user) {
+    let sortedDeckbox = [];
+    User.findById(req.user.id).populate('cards').exec(function(err, user) {
+        user.cards.forEach(function(c){
+            sortedDeckbox.push(c);
+        })
+        sortedDeckbox.sort(function(a, b) {
+            return a.name.localeCompare(b.name) || a.set.localeCompare(b.set) || b.collector_number - a.collector_number;
+        });
         res.render('cards/deckbox', {
             title: "Deckbox",
             card,
             user: req.user,
-            cardlist: user.cards,
+            cardlist: sortedDeckbox,
         });
-    })
+    });
 };
 
 function boxSearch(req, res) {
     cardCache = {};
+    let sortedDeckbox = [];
     const name = req.query.name;
     const set = req.query.set;
     let URL;
@@ -78,22 +86,25 @@ function boxSearch(req, res) {
         const card = JSON.parse(body);
         cardCache = card;
         User.findById(req.user.id).populate('cards').exec(function(err, user) {
-            Card.find({}).sort({'name':'asc', 'set':'asc', 'collector_number':'asc'}).exec(function(err, cards){
-                res.render('cards/deckbox', {
-                    title: "Deckbox", 
-                    card,
-                    user: req.user,
-                    cardlist: cards,
-                });
+            user.cards.forEach(function(c){
+                sortedDeckbox.push(c);
             })
+            sortedDeckbox.sort(function(a, b) {
+                return a.name.localeCompare(b.name) || a.set.localeCompare(b.set) || b.collector_number - a.collector_number;
+            });
+            res.render('cards/deckbox', {
+                title: "Deckbox",
+                card,
+                user: req.user,
+                cardlist: sortedDeckbox,
+            });
         });
     });
 };
 
 function addToBox(req, res) {
-    let query = { set: cardCache.set , collector_num: cardCache.collector_num, name: cardCache.name };
-    let update = { $inc: { quantity: 1 }};
-    Card.findOneAndUpdate(query, update, (function(err, found){
+    let query = { set: cardCache.set , collector_number: cardCache.collector_number, name: cardCache.name };
+    Card.findOne(query, function(err, found) {
         if (found === null) {
             Card.create(cardCache, function(err, card){
                 req.user.cards.push(card);
@@ -101,10 +112,29 @@ function addToBox(req, res) {
                     res.redirect('/deckbox');
                 });
             });
-        } else {
-            res.redirect('/deckbox');
+        } else { // The card is found
+            User.findById(req.user.id).populate('cards').exec(function(err, user){ // Find the user and populate
+                let needNew = true;
+                user.cards.forEach(function(c){
+                    if (c.name === cardCache.name && c.set === cardCache.set && c.collector_number === cardCache.collector_number){
+                        c.quantity++;
+                        c.save();
+                        needNew = false;
+                        res.redirect('/deckbox');
+                    };
+                });
+                console.log(needNew);
+                if (needNew) {
+                    Card.create(cardCache, function(err, card){
+                        req.user.cards.push(card);
+                        req.user.save(function(err) {
+                            res.redirect('/deckbox');
+                        });
+                    });
+                };
+            });
         };
-    }));
+    });
 };
 
 function showCard(req, res) {
