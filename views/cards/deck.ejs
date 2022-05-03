@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<div class="deck-create-div">
+    <form id="create-deck" action="/decks/add" method="POST">
+        <h1 class="text-center">Your Decks</h1>
+        <div class="deck-group">
+            <label class="deck-create-label" for="name">Deck Name</label>
+            <input type="text" name="name" class="block" placeholder="Enter a Deck Name">
+        </div>
+        <div class="search-group-button">
+            <button class="button block" type="submit">Create</button>
+        </div>
+    </form>
+</div><br>
+
+<table>
+    <tr class="table-headers table-bottom-border">
+        <th class="table-header-right">Delete</th>
+        <th class="table-header-right">Deck Name</th>
+        <th>Last Modified</th>
+    </tr>
+    <% decks.forEach(function(d) { %>
+    <tr>
+        <td>
+            <form action="/deck/delete/<%= d.id %>?_method=DELETE" method="POST" class="delete-button">
+                <button type="submit">X</button>
+            </form>
+        </td>  
+        <td><a href="/decks/<%= d.id %>"><%= d.name %></a></td>
+        <td><%= d.updatedAt %></td>
+    </tr>
+    <% }) %>
+</table>
+
+<%- include('../partials/footer') %>

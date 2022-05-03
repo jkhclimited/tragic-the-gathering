@@ -1,0 +1,124 @@
+body {
+  height: 100vh;
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 14px;
+  background-color: var(--main-bg);
+  color: rgb(211, 211, 211);
+}
+
+:root {
+  --main-bg: rgb(41, 41, 41);
+  --top-menu-bg: rgb(54, 0, 54);
+  --hover-bg: rgb(110, 69, 110);
+  --hover-color: purple;
+}
+
+.block {
+  display:block;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.header-bar {
+  background-color: var(--top-menu-bg);
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.header-bar a:hover {
+  background-color: var(--hover-bg);
+  color: white;
+}
+
+.header-bar a {
+  line-height: 3rem;
+  padding: 0 1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
+}
+
+.header-bar a:last-child {
+  margin-left: auto;
+}
+
+.center-div, .deck-name-div {
+  display: table;
+  width: 50%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.deck-create-div {
+  display: table;
+  width: 30%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.edit-deck-name {
+  width: 100%;
+}
+
+.search-label, .deck-create-label{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.search-group, .deck-name-group {
+  float: left;
+  margin-right: 20px;
+}
+
+.deck-name-group {
+  width: 70%;
+}
+
+.search-group-button, .deck-name-change-button{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.deck-button {
+  float: left;
+}
+
+.search-results {
+  display: table;
+  width: 50%;
+  margin: 0 auto;
+}
+
+td a {
+  text-decoration: none;
+  color: white;
+}
+
+td a:hover{
+  color: var(--hover-color);
+}
+
+table {
+  display: table;
+  width: 95%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.table-headers {
+  text-align: left;
+  border-bottom: solid white 2px;
+}
+
+.table-header-right {
+  border-right: solid white 2px;
+}
+

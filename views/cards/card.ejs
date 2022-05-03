@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+
+<div class="search-results">
+    <p> <strong>Name: </strong><%= card.name %><br>
+        <strong>Mana Cost: </strong><%= card.mana_cost %><br>
+        <strong>Type: </strong><%= card.type_line %><br>
+        <% if (card.power && card.toughness) { %>
+            <strong>Power: </strong><%= card.power %>, <strong>Toughness: </strong><%= card.toughness %><br>
+        <% } %>
+        <strong>Set: </strong><%= card.set.toUpperCase() %>, <strong>Set Name: </strong><%= card.set_name %>, <strong>Card No: </strong><%= card.collector_number %><br>
+        <strong>Oracle Text: </strong><%= card.oracle_text %>
+    </p>
+</div>
+
+<%- include('../partials/footer') %>

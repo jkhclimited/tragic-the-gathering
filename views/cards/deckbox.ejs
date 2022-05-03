@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+
+
+<div class="center-div">
+    <form action="/deckbox/search" method="GET">
+        <h1 class="text-center">Your Deckbox</h1>
+        <div class="search-group">
+            <label class="search-label" for="name">Card Name</label>
+            <input type="text" name="name" class="block" placeholder="Enter a Card Name">
+        </div>
+        <div class="search-group">
+            <label class="search-label" for="set">Card Set (Optional)</label>
+            <input type="text" name="set" class="block" placeholder="Set Name">
+        </div>
+        <div class="search-group-button">
+            <button class="button block" type="submit">Search</button>
+        </div>
+    </form>
+</div><br>
+<div class="search-results">
+    <% if (card.name) { %>
+        <p> <strong>Name: </strong><%= card.name %><br>
+            <strong>Mana Cost: </strong><%= card.mana_cost %><br>
+            <strong>Type: </strong><%= card.type_line %><br>
+            <% if (card.power && card.toughness) { %>
+                <strong>Power: </strong><%= card.power %>, <strong>Toughness: </strong><%= card.toughness %><br>
+            <% } %>
+            <strong>Set: </strong><%= card.set.toUpperCase() %>, <strong>Set Name: </strong><%= card.set_name %>, <strong>Card No: </strong><%= card.collector_number %><br>
+            <strong>Oracle Text: </strong><%= card.oracle_text %>
+        </p>
+        <form id="add-card-to-deckbox" action="/deckbox" method="POST">
+            <button class="button block" type="submit">Add to Deckbox</button>
+        </form>
+    <% } else if (card.code) { %>
+        No card with that name has been found.
+    <% } else { %>
+        Please search for a card.
+    <% } %>
+</div><br>
+<table>
+    <tr class="table-headers table-bottom-border">
+        <th class="table-header-right">Delete</th>
+        <th class="table-header-right">Quantity</th>
+        <th class="table-header-right">Card Name</th>
+        <th class="table-header-right">Set</th>
+        <th class="table-header-right">Number</th>
+        <th class="table-header-right">Type</th>
+        <th>Foil?</th>
+    </tr>
+    <% cardlist.forEach(function(c) { %>
+    <tr>
+        <td>
+            <form action="/deckbox/delete/<%= c.id %>?_method=DELETE" method="POST" class="delete-button">
+                <button type="submit">X</button>
+            </form>
+        </td>  
+        <td><%= c.quantity %></td>
+        <td><a href="/card/<%= c.id %>"><%= c.name %></a></td>
+        <td><%= c.set_name %></td>
+        <td><%= c.collector_number %></td>
+        <td><%= c.type_line %></td>
+        <td><%= c.nonfoil ? "No" : "Yes" %></td>
+    </tr>
+    <% }) %>
+</table><br>
+
+<%- include('../partials/footer') %>
