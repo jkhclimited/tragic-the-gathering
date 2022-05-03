@@ -60,7 +60,6 @@
         <th>Foil?</th>
     </tr>
     <% decklist.forEach(function(d) { %>
-        <% console.log(d) %>
     <tr>
         <td>
             <form action="/decklist/delete/<%= d.id %>?_method=DELETE" method="POST" class="delete-button">

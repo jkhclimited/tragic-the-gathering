@@ -10,6 +10,9 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var deckboxRouter = require('./routes/deckbox');
+var decksRouter = require('./routes/decks');
+var decklistsRouter = require('./routes/decklists');
 const { all } = require('./routes/index');
 
 var app = express();
@@ -37,6 +40,9 @@ app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
+app.use('/', deckboxRouter);
+app.use('/', decksRouter);
+app.use('/', decklistsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
