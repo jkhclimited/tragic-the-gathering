@@ -80,6 +80,7 @@ function addToThisDeck(req, res) {
         if (found === null) {
             Card.create(cardCache, function(err, card){
                 card.copiesInDeck = 1;
+                card.image_link = cardCache.image_uris.normal;
                 card.save();
                 Deck.findById(deckID, function(err, deck) {
                     req.user.cards.push(card);
@@ -109,9 +110,10 @@ function addToThisDeck(req, res) {
                         });
                     };
                 });
-                console.log(needNew);
                 if (needNew) {
                     Card.create(cardCache, function(err, card){
+                        card.image_link = cardCache.image_uris.normal;
+                        card.save();
                         req.user.cards.push(card);
                         req.user.save(function(err) {
                             Deck.findById(deckID, function(err, deck) {

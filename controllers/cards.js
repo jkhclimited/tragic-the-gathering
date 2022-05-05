@@ -107,9 +107,12 @@ function addToBox(req, res) {
     Card.findOne(query, function(err, found) {
         if (found === null) {
             Card.create(cardCache, function(err, card){
-                req.user.cards.push(card);
-                req.user.save(function(err) {
-                    res.redirect('/deckbox');
+                card.image_link = cardCache.image_uris.normal;
+                card.save(function(err){
+                    req.user.cards.push(card);
+                    req.user.save(function(err) {
+                        res.redirect('/deckbox');
+                    });
                 });
             });
         } else { // The card is found
@@ -123,12 +126,14 @@ function addToBox(req, res) {
                         res.redirect('/deckbox');
                     };
                 });
-                console.log(needNew);
                 if (needNew) {
                     Card.create(cardCache, function(err, card){
-                        req.user.cards.push(card);
-                        req.user.save(function(err) {
-                            res.redirect('/deckbox');
+                        card.image_link = cardCache.image_uris.normal;
+                        card.save(function(err){
+                            req.user.cards.push(card);
+                            req.user.save(function(err) {
+                                res.redirect('/deckbox');
+                            });
                         });
                     });
                 };

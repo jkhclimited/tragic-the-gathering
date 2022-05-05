@@ -26,6 +26,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     default: "NM",
   },
+  image_link: String,  //image.normal
 }, {
   timestamps: false
 });

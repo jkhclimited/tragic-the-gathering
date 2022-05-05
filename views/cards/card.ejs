@@ -1,6 +1,10 @@
 <%- include('../partials/header') %>
 
 <div class="search-results">
+    <br>
+    <div class="picture">
+        <img src="<%= card.image_link %>"> 
+    </div>
     <p> <strong>Name: </strong><%= card.name %><br>
         <strong>Mana Cost: </strong><%= card.mana_cost %><br>
         <strong>Type: </strong><%= card.type_line %><br>
