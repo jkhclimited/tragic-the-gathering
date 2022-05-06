@@ -49,4 +49,5 @@ Instructions:
 
 Planned future enhancements include using SPA to simply display the card by clicking on the name rather than requiring a different page to see the card.
 
-Also on the list is the ability to choose whether you have a foil copy or not (this is half done but I couldn't stop getting errors in time), as well as the printing version.
+Also on the list is the ability to choose whether you have a foil copy or not (this is half done but I couldn't stop getting errors in time), as well as the printing version, because of multiple versions from the same set such as this:
+!["Demonic Tutors from STA"](cardsetcomparison.png)
